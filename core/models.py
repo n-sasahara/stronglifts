@@ -56,7 +56,7 @@ class Profile(models.Model):
         get_user_model(),
         on_delete=models.CASCADE
     )
-    exercise_type = models.BooleanField(default=False)
+    exercise_flag = models.BooleanField(default=False)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
 
@@ -65,10 +65,11 @@ class Profile(models.Model):
 
 
 class Exercise(models.Model):
+
     EXERCISE_TYPE_CHOICES = (
         ('A', 'SetA'),
         ('B', 'SetB'),
-        ('C', 'Always')
+        ('AB', 'Always')
     )
 
     DEFAULT_REP_CHOICES = (

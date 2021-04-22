@@ -1,11 +1,15 @@
 from rest_framework import viewsets, generics
 from rest_framework.permissions import AllowAny
+from rest_framework.views import APIView
+from rest_framework.response import Response
 
 from .serializers import (
+    NextExerciseSerializer,
     UserSerializer,
     ProfileSerializer,
     ExerciseSerializer,
-    ExerciseLogSerializer
+    ExerciseLogSerializer,
+    NextExerciseSerializer
 )
 from .models import (
     Profile,
@@ -49,3 +53,24 @@ class ExerciseLogViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+
+class NextExerciseView(APIView):
+
+    def get(self, request, format=None):
+        exercise_flag = Profile.objects.filter(user=request.user).values('exercise_flag').first().get('exercise_flag')
+        exercises = Exercise.objects.all()
+
+        print(exercise_flag, exercises)
+
+        if exercise_flag == False:
+            next_exercise = exercises.filter(exercise_type__contains='A')
+        else:
+            next_exercise = exercises.filter(exercise_type__contains='B')
+        
+        serializer = NextExerciseSerializer(next_exercise, many=True)
+
+        return Response(serializer.data)
+        
+
+

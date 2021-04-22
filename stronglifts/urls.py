@@ -21,7 +21,8 @@ from core.views import (
     CreateUserView,
     ProfileViewSet,
     ExerciseViewSet,
-    ExerciseLogViewSet
+    ExerciseLogViewSet,
+    NextExerciseView
 )
 
 router = routers.DefaultRouter()
@@ -34,5 +35,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/create/', CreateUserView.as_view(), name='create'),
     path('api/v1/', include(router.urls)),
+    path('api/v1/next-exercise/', NextExerciseView.as_view(), name='next-exercise'),
     path('auth/', include('djoser.urls.jwt'))
 ]

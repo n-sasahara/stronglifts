@@ -29,8 +29,9 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Profile
-        fields = ['id', 'nickname', 'user', 'created_on', 'updated_on']
+        fields = ['id', 'nickname', 'user', 'exercise_flag', 'created_on', 'updated_on']
         extra_kwargs = {'user': {'read_only': True}}
+
 
 
 class ExerciseSerializer(serializers.ModelSerializer):
@@ -94,3 +95,10 @@ class ExerciseLogSerializer(serializers.ModelSerializer):
             return str(obj.set_weight + Decimal(5))
 
         return str(obj.set_weight)
+
+
+class NextExerciseSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Exercise
+        fields = ['id',]
