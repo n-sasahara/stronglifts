@@ -63,7 +63,7 @@ class NextExerciseView(APIView):
 
         print(exercise_flag, exercises)
 
-        if exercise_flag == False:
+        if not exercise_flag:
             next_exercise = exercises.filter(exercise_type__contains='A')
         else:
             next_exercise = exercises.filter(exercise_type__contains='B')

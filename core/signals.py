@@ -1,4 +1,4 @@
-from .models import Exercise, Profile
+from .models import Exercise, ExerciseLog, Profile
 
 
 def create_default_exercises(sender, **kwargs):
@@ -12,3 +12,14 @@ def create_default_exercises(sender, **kwargs):
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.get_or_create(user=instance)
+
+
+def change_exercise_flag(sender, instance, created, **kwargs):
+    if created:
+        exercise_date = instance.exercise_date
+        queryset_count = ExerciseLog.objects.select_related('user').filter(user=instance.user, exercise_date=exercise_date).count()
+
+        if queryset_count == 3:
+            user_profile = Profile.objects.filter(user=instance.user).first()
+            user_profile.exercise_flag = not user_profile.exercise_flag
+            user_profile.save()
